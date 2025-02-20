@@ -278,7 +278,6 @@
 	      };
 	    };
 	  };
-	  nvim-cmp.enable = true;
 	  cmp-path.enable = true;
 	  luasnip.enable = true;
 	  cmp.enable = true;
@@ -303,10 +302,15 @@
       ];
 
       perSystem = {
-        pkgs,
         system,
         ...
       }: let
+	pkgs = import inputs.nixpkgs {
+	  inherit system;
+	  config = {
+	    allowUnfree = true;
+	  };
+	};
         nixvimLib = nixvim.lib.${system};
         nixvim' = nixvim.legacyPackages.${system};
         nixvimModule = {
@@ -316,10 +320,6 @@
           };
         };
         nvim = nixvim'.makeNixvimWithModule nixvimModule;
-	# _module.args.pkgs = import self.inputs.nixpkgs {
-	#   inherit system;
-	#   confif.allowUnfree = true;
-	# };
       in {
         checks = {
           default = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
