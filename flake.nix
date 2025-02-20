@@ -18,6 +18,8 @@
   let
    config = {pkgs, ...}:
      {
+     	colorschemes.gruvbox.enable = true;
+
 	# https://nix-community.github.io/nixvim/NeovimOptions/index.html?highlight=globals#globals
   	globals = {
   	  # Set <space> as the leader key
@@ -48,9 +50,6 @@
   	opts = {
   	  # Show line numbers
   	  number = true;
-  	  # You can also add relative line numbers, to help with jumping.
-  	  #  Experiment for yourself to see if you like it!
-  	  #relativenumber = true
 
   	  # Enable mouse mode, can be useful for resizing splits for example!
   	  mouse = "a";
@@ -229,9 +228,20 @@
   	  # https://nix-community.github.io/nixvim/plugins/todo-comments/index.html
   	  todo-comments = {
   	    enable = true;
-  	    signs = true;
+  	    settings.signs = true;
   	  };
-  	};
+	  luasnip.enable = true;
+	  cmp.enable = true;
+	  web-devicons.enable = true;
+	  leap.enable = true;
+	  telescope = {
+	    enable = true;
+	    #fzf-native.enable = true;
+	  };
+  	}
+	// (
+	      (import ./plugins/lsp)
+	);
      };
     in
     flake-parts.lib.mkFlake {inherit inputs;} {
@@ -251,7 +261,7 @@
         nixvim' = nixvim.legacyPackages.${system};
         nixvimModule = {
           inherit pkgs;
-          #module = import ./config;
+          module = config;
           extraSpecialArgs = {
           };
         };
