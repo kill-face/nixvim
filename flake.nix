@@ -251,7 +251,7 @@
         nixvim' = nixvim.legacyPackages.${system};
         nixvimModule = {
           inherit pkgs;
-          module = import ./config;
+          #module = import ./config;
           extraSpecialArgs = {
           };
         };
