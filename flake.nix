@@ -124,6 +124,14 @@
   	      desc = "Exit terminal mode";
   	    };
   	  }
+	  {
+	    mode = "n";
+  	    key = "<leader>f";
+  	    action = "<cmd>lua require('conform').format()<CR>";
+  	    options = {
+  	      desc = "Format document";
+  	    };
+  	  }
   	  # TIP: Disable arrow keys in normal mode
   	  /*
   	  {
@@ -211,25 +219,67 @@
   	  }
   	];
 
+	extraPackages = with pkgs; [
+	  #python
+          black
+          isort
+
+	  # csharp
+	  dotnet-sdk
+
+	  #rust
+          rust-analyzer
+          rustfmt
+
+	  # nix
+	  nixpkgs-fmt
+
+	  # terraform
+	  terraform
+
+	  # markup languages
+          nodePackages.prettier
+          jq
+
+	  # shell
+          shfmt
+
+	  # lua
+          stylua
+        ];
+
   	plugins = {
-  	  # Detect tabstop and shiftwidth automatically
-  	  # https://nix-community.github.io/nixvim/plugins/sleuth/index.html
-  	  sleuth = {
-  	    enable = true;
-  	  };
-
-  	  # "gc" to comment visual regions/lines
-  	  # https://nix-community.github.io/nixvim/plugins/comment/index.html
-  	  comment = {
-  	    enable = true;
-  	  };
-
   	  # Highlight todo, notes, etc in comments
   	  # https://nix-community.github.io/nixvim/plugins/todo-comments/index.html
   	  todo-comments = {
   	    enable = true;
   	    settings.signs = true;
   	  };
+
+  	  # Detect tabstop and shiftwidth automatically
+  	  sleuth.enable = true;
+  	  # "gc" to comment visual regions/lines
+  	  comment.enable = true;
+	  conform-nvim = {
+	    enable = true;
+
+	    settings = {
+	      formatters_by_ft = {
+	        "_" = [ "trim_whitespace" ];
+	        javascript = [ [ "prettierd" "prettier" ] ];
+		csharp = [ "csharpier" ];
+	        json = [ "jq" ];
+	        lua = [ "stylua" ];
+		nix = ["nixpkgs-fmt"];
+	        python = [ "isort" "black" ];
+	        rust = [ "rustfmt" ];
+	        sh = [ "shfmt" ];
+	        terraform = [ "terraform_fmt" ];
+	      };
+	    };
+	  };
+	  nvim-cmp.enable = true;
+	  cmp-path.enable = true;
 	  luasnip.enable = true;
 	  cmp.enable = true;
 	  web-devicons.enable = true;
