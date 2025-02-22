@@ -132,6 +132,14 @@
   	      desc = "Format document";
   	    };
   	  }
+	  {
+	    mode = "v";
+	    key = "x";
+	    action = "d";
+	    options = {
+	      desc = "Delete selected text";
+	    };
+	  }
   	  # TIP: Disable arrow keys in normal mode
   	  /*
   	  {
@@ -232,7 +240,8 @@
           rustfmt
 
 	  # nix
-	  nixpkgs-fmt
+	  alejandra
+	  #nixpkgs-fmt
 
 	  # terraform
 	  terraform
@@ -266,11 +275,10 @@
 	    settings = {
 	      formatters_by_ft = {
 	        "_" = [ "trim_whitespace" ];
-	        javascript = [ [ "prettierd" "prettier" ] ];
 		csharp = [ "csharpier" ];
 	        json = [ "jq" ];
 	        lua = [ "stylua" ];
-		nix = ["nixpkgs-fmt"];
+		nix = ["alejandra"];
 	        python = [ "isort" "black" ];
 	        rust = [ "rustfmt" ];
 	        sh = [ "shfmt" ];
