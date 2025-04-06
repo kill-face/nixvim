@@ -238,6 +238,9 @@
 
         # lua
         stylua
+
+        # scheme
+        conjure
       ];
 
       plugins =
@@ -274,7 +277,7 @@
           luasnip.enable = true;
           cmp.enable = true;
           web-devicons.enable = true;
-          leap.enable = true;
+          #leap.enable = true;
           telescope = {
             enable = true;
             #fzf-native.enable = true;
