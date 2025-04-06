@@ -273,6 +273,7 @@
               };
             };
           };
+          conjure.enable = true;
           cmp-path.enable = true;
           luasnip.enable = true;
           cmp.enable = true;
