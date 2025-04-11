@@ -29,16 +29,16 @@
         have_nerd_font = false;
       };
 
-      clipboard = {
-        providers = {
-          wl-copy.enable = true; # For Wayland
-          xsel.enable = true; # For X11
-        };
-        # Sync clipboard between OS and Neovim
-        #  Remove this option if you want your OS clipboard to remain independent.
-        #  See `:help 'clipboard'`
-        register = "unnamedplus";
-      };
+      # clipboard = {
+      #   # providers = {
+      #   #   wl-copy.enable = true; # For Wayland
+      #   #   xsel.enable = true; # For X11
+      #   #};
+      #   # Sync clipboard between OS and Neovim
+      #   #  Remove this option if you want your OS clipboard to remain independent.
+      #   #  See `:help 'clipboard'`
+      #   register = "unnamedplus";
+      # };
 
       # [[ Setting options ]]
       # See `:help vim.opt`
@@ -285,6 +285,35 @@
           };
         }
         // (import ./plugins/lsp);
+
+      extraConfigLua = ''
+        -- Detect WSL at runtime within Neovim
+        if vim.fn.has('wsl') == 1 then
+          -- We are in WSL: Explicitly configure win32yank.exe
+          vim.g.clipboard = {
+            name = 'win32yank-wsl',
+            copy = {
+              ['+'] = 'win32yank.exe -i',
+              ['*'] = 'win32yank.exe -i',
+            },
+            paste = {
+              ['+'] = 'win32yank.exe -o',
+              ['*'] = 'win32yank.exe -o',
+            },
+            cache_enabled = 0, -- Disable caching for direct interaction
+          }
+          -- Still set clipboard=unnamedplus to integrate with the '+' register by default
+          vim.opt.clipboard = 'unnamedplus'
+          print("NixVim: Configured clipboard for WSL (win32yank.exe)") -- Optional debug
+        else
+          -- We are NOT in WSL (Native Linux): Rely on auto-detection or configure Linux tools
+          -- This assumes wl-clipboard/xsel are installed (conditionally or always)
+          vim.opt.clipboard = 'unnamedplus'
+          print("NixVim: Configured clipboard for Linux (auto-detect)") -- Optional debug
+          -- If auto-detection fails on Linux, you could explicitly configure wl-copy/xsel here:
+          -- vim.g.clipboard = { name = 'wl-clipboard', copy = {...}, paste = {...} }
+        end
+      '';
     };
   in
     flake-parts.lib.mkFlake {inherit inputs;} {
