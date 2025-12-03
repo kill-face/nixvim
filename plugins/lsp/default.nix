@@ -15,6 +15,7 @@
       pylsp.enable = true;
       ruff.enable = true;
       omnisharp.enable = true;
+      ionide.enable = true;
     };
   };
 }

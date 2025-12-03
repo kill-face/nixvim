@@ -131,21 +131,40 @@
           };
         }
         {
+          mode = "n";
+          key = "<leader>c";
+          action.__raw = "function() require('Comment.api').toggle.linewise.current() end";
+          options.desc = "Toggle comment (linewise)";
+        }
+        {
           mode = "v";
-          key = "x";
-          action = "d";
-          options = {
-            desc = "Delete selected text";
-          };
+          key = "<leader>c";
+          action.__raw = "function() require('Comment.api').toggle.linewise(vim.fn.visualmode()) end";
+          options.desc = "Toggle comment (visual)";
+        }
+        # TIP: Disable arrow keys in normal mode
+        /*
+        {
+          mode = "n";
+          key = "<left>";
+          action = "<cmd>echo 'Use h to move!!'<CR>";
         }
         {
           mode = "n";
-          key = "U";
-          action = "<C-R>";
-          options = {
-            desc = "Redo with 'U' makes more sense given that 'u' is undo";
-          };
+          key = "<right>";
+          action = "<cmd>echo 'Use l to move!!'<CR>";
         }
+        {
+          mode = "n";
+          key = "<up>";
+          action = "<cmd>echo 'Use k to move!!'<CR>";
+        }
+        {
+          mode = "n";
+          key = "<down>";
+          action = "<cmd>echo 'Use j to move!!'<CR>";
+        }
+        */
         # Keybinds to make split navigation easier.
         #  Use CTRL+<hjkl> to switch between windows
         #
