@@ -3,6 +3,7 @@
     enable = true;
     inlayHints = true;
 
+    # https://github.com/nix-community/nixvim/blob/main/plugins/lsp/lsp-packages.nix
     servers = {
       bashls.enable = true;
       dockerls.enable = true;
@@ -15,7 +16,7 @@
       pylsp.enable = true;
       ruff.enable = true;
       omnisharp.enable = true;
-      FsAutoComplete.enable = true;
+      fsharp_language_server.enable = true;
     };
   };
 }
