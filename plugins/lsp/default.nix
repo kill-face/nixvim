@@ -16,7 +16,7 @@
       pylsp.enable = true;
       ruff.enable = true;
       omnisharp.enable = true;
-      fsharp_language_server.enable = true;
+      fsautocomplete.enable = true;
     };
   };
 }
