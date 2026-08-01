@@ -97,6 +97,12 @@
 
         # Set highlight on search, but clear on pressing <Esc> in normal mode
         hlsearch = true;
+
+        # Use Treesitter folds where available, but keep files open on load.
+        foldenable = true;
+        foldlevel = 99;
+        foldlevelstart = 99;
+        foldcolumn = "1";
       };
 
       # [[ Basic Keymaps ]]
@@ -141,6 +147,12 @@
           key = "<leader>c";
           action.__raw = "function() require('Comment.api').toggle.linewise(vim.fn.visualmode()) end";
           options.desc = "Toggle comment (visual)";
+        }
+        {
+          mode = "n";
+          key = "<leader>mp";
+          action = "<cmd>MarkdownPreviewToggle<CR>";
+          options.desc = "Toggle Markdown preview";
         }
         # TIP: Disable arrow keys in normal mode
         /*
@@ -275,6 +287,19 @@
           sleuth.enable = true;
           # "gc" to comment visual regions/lines
           comment.enable = true;
+          markdown-preview = {
+            enable = true;
+            settings = {
+              auto_start = 0;
+              auto_close = 1;
+              echo_preview_url = 1;
+              filetypes = ["markdown"];
+              preview_options = {
+                hide_yaml_meta = 1;
+                sync_scroll_type = "middle";
+              };
+            };
+          };
           conform-nvim = {
             enable = true;
 
@@ -303,7 +328,8 @@
             #fzf-native.enable = true;
           };
         }
-        // (import ./plugins/lsp);
+        // (import ./plugins/lsp)
+        // (import ./plugins/treesitter/defualt.nix {inherit pkgs;});
 
       extraConfigLua = ''
         -- Detect WSL at runtime within Neovim
@@ -323,12 +349,10 @@
           }
           -- Still set clipboard=unnamedplus to integrate with the '+' register by default
           vim.opt.clipboard = 'unnamedplus'
-          print("NixVim: Configured clipboard for WSL (win32yank.exe)") -- Optional debug
         else
           -- We are NOT in WSL (Native Linux): Rely on auto-detection or configure Linux tools
           -- This assumes wl-clipboard/xsel are installed (conditionally or always)
           vim.opt.clipboard = 'unnamedplus'
-          print("NixVim: Configured clipboard for Linux (auto-detect)") -- Optional debug
           -- If auto-detection fails on Linux, you could explicitly configure wl-copy/xsel here:
           -- vim.g.clipboard = { name = 'wl-clipboard', copy = {...}, paste = {...} }
         end
