@@ -138,6 +138,12 @@
         }
         {
           mode = "n";
+          key = "U";
+          action = "<C-r>";
+          options.desc = "Redo";
+        }
+        {
+          mode = "n";
           key = "<leader>c";
           action.__raw = "function() require('Comment.api').toggle.linewise.current() end";
           options.desc = "Toggle comment (linewise)";
