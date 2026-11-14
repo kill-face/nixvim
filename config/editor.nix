@@ -36,6 +36,14 @@
             group = "splits / stop";
           }
           {
+            __unkeyed-1 = "<leader>ac";
+            group = "database console";
+          }
+          {
+            __unkeyed-1 = "<leader>ad";
+            group = "database view";
+          }
+          {
             __unkeyed-1 = "<leader>d";
             group = "debug";
           }

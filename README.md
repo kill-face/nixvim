@@ -11,6 +11,7 @@ Neovim set up as a Rider-style .NET IDE, with key bindings that follow
 | Run configurations, NuGet, solution mgmt, user secrets | easy-dotnet.nvim (`:Dotnet …`) |
 | Reformat Code | `dotnet format whitespace` (.editorconfig), CSharpier if the repo uses it, Fantomas for F# |
 | Code Cleanup / Inspect Code | JetBrains ReSharper CLI (`jb`) |
+| Database tools (DataGrip) | nvim-dbee: connections drawer, SQL editor, paginated results grid (SQL Server, Postgres, SQLite, …) |
 | Search Everywhere / Go to | snacks.nvim picker |
 | Project view | snacks explorer |
 | Problems / TODO / Find | trouble.nvim |
@@ -47,13 +48,47 @@ Additions on top of the ideavimrc:
   next/previous failure.
 - **ReSharper CLI:** `<leader>rc` Code Cleanup on the file, `<leader>rI`
   InspectCode on the solution (results in the quickfix list).
-
 - **Markdown preview:** `<leader>mp` toggles; ideavim's `<leader>amvp` /
   `<leader>amve` open / close it.
+- **`<leader>ss`** (Console.Execute) runs the SQL statement in `.sql` buffers
+  and sends to F# Interactive elsewhere.
 
-Not mapped (no equivalent set up): database console (`<leader>acds`, `acs`,
-`adr`, `es`), injected-language editing (`eid`, `eif`),
+Not mapped (no equivalent set up): injected-language editing (`eid`, `eif`),
 `dm` mark object, `ir` rendered docs, `arv` reload (the config is immutable).
+
+## Database (nvim-dbee)
+
+| ideavim | Rider action | Here |
+|---|---|---|
+| `<leader>ws` | ActivateDatabaseToolWindow | open/close dbee (drawer, editor, results) |
+| `<leader>acds` | ChooseDataSource | pick the active connection |
+| `<leader>acs` | ChooseSchema | switch database on the connection |
+| `<leader>es` | Console.Execute | run the selection, or the statement under the cursor (block between blank lines / `GO`), in any buffer |
+| `<leader>adr` | DatabaseView.Refresh | refresh the drawer |
+
+In the dbee editor, `BB` runs the selection or the whole note. In the results,
+`L`/`H` page, `yaj`/`yac` yank rows as JSON/CSV. The drawer lists its own keys.
+
+Connections live outside the Nix store: in
+`~/.local/state/nvim/dbee/persistence.json` (the drawer's add/edit writes here)
+or `$DBEE_CONNECTIONS`, both a JSON list:
+
+```json
+[
+  {
+    "id": "dev",
+    "name": "dev",
+    "type": "sqlserver",
+    "url": "sqlserver://app:{{ env `DEV_DB_PASS` }}@db.example:1433?database=App"
+  }
+]
+```
+
+`{{ env … }}` and `{{ exec … }}` keep secrets out of the file, e.g.
+``{{ exec `cat /run/secrets/dev-db-pass` }}`` with sops-nix. For Windows/AD
+logins from Linux, dbee's SQL Server driver includes Kerberos integrated auth
+(`authenticator=krb5` plus a krb5 config). Entra ID (Azure AD) auth is not
+compiled in.
 
 ## .NET notes
 

@@ -42,6 +42,10 @@ in {
 
     # ---- Actions -----------------------------------------------------------
     (map "n" "<leader>as" (kf "stop") "Stop")
+    (map "n" "<leader>acds" (kf "db_choose_connection") "Console.Jdbc.ChooseDataSource")
+    (map "n" "<leader>acs" (kf "db_choose_database") "Console.Jdbc.ChooseSchema")
+    (map "n" "<leader>adr" (kf "db_refresh") "DatabaseView.Refresh")
+    (map nv "<leader>es" (kf "db_execute") "Console.Jdbc.Execute")
     (map nv "<leader>am" (fn "vim.lsp.buf.code_action()") "ShowIntentionActions")
     (map nv "<M-CR>" (fn "vim.lsp.buf.code_action()") "ShowIntentionActions (Alt+Enter)")
     (map "n" "<leader>aob" (fn "vim.ui.open(vim.fn.expand('%:p'))") "OpenInBrowser")
@@ -157,6 +161,7 @@ in {
     (map "n" "<leader>wp" "<cmd>Trouble diagnostics toggle<CR>" "ActivateProblemsViewToolWindow")
     (map "n" "<leader>wc" "<cmd>Trouble todo toggle<CR>" "ActivateTODOToolWindow")
     (map "n" "<leader>wu" (dotnet "testrunner") "ActivateUnitTestsToolWindow")
+    (map "n" "<leader>ws" (fn "require('dbee').toggle()") "ActivateDatabaseToolWindow")
     (map "n" "<leader>wf" (fn "Snacks.explorer.reveal()") "SelectInProjectView")
     (map "n" "<leader>wg" (dotnet "terminal_toggle") "ActivateServicesToolWindow (running apps)")
     (map "n" "<leader>wt" (fn "Snacks.terminal.toggle()") "ActivateTerminalToolWindow")
@@ -193,6 +198,6 @@ in {
 
     # ---- REPL (F# Interactive) ---------------------------------------------
     (map nv "<leader>sr" (kf "fsi_send") "SendToFsi")
-    (map nv "<leader>ss" (kf "fsi_send") "Console.Execute (send line to FSI)")
+    (map nv "<leader>ss" (kf "repl_execute") "Console.Execute (SQL: run statement, F#: send to FSI)")
   ];
 }

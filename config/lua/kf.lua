@@ -183,6 +183,114 @@ function M.fsi_send()
 end
 
 -------------------------------------------------------------------------------
+-- Database console (DataGrip / Rider database tools) on nvim-dbee
+-------------------------------------------------------------------------------
+
+local function dbee_api() return require("dbee.api") end
+
+--- dbee's default layout, except that closing it on quit is deferred a tick.
+--- Upstream closes all dbee windows from QuitPre, which swallows `:qa` (you'd
+--- have to quit twice). Deferred, `:qa` exits right away and `:q` in a dbee
+--- window still closes the whole dbee layout.
+function M.dbee_layout()
+  local layout = require("dbee.layouts").Default:new()
+  function layout:configure_window_on_quit(winid)
+    vim.api.nvim_create_autocmd("QuitPre", {
+      callback = function()
+        if vim.api.nvim_get_current_win() ~= winid then return end
+        vim.schedule(function()
+          if self:is_open() then self:close() end
+        end)
+      end,
+    })
+  end
+  return layout
+end
+
+--- The selection, or the statement under the cursor: the block of lines
+--- between blank lines / `GO` separators (like DataGrip's Ctrl+Enter).
+local function query_at_cursor()
+  if vim.fn.mode():match("[vV\22]") then
+    local lines = vim.fn.getregion(vim.fn.getpos("v"), vim.fn.getpos("."), { type = vim.fn.mode() })
+    vim.api.nvim_feedkeys(vim.keycode("<Esc>"), "n", false)
+    return table.concat(lines, "\n")
+  end
+  local function is_break(l)
+    local line = vim.fn.getline(l)
+    return line:match("^%s*$") or line:match("^%s*[Gg][Oo]%s*$")
+  end
+  local cur, last = vim.fn.line("."), vim.fn.line("$")
+  local s, e = cur, cur
+  while s > 1 and not is_break(s - 1) do s = s - 1 end
+  while e < last and not is_break(e + 1) do e = e + 1 end
+  return table.concat(vim.api.nvim_buf_get_lines(0, s - 1, e, false), "\n")
+end
+
+--- Console.Execute: run the selection / statement on the current connection.
+function M.db_execute()
+  local query = query_at_cursor()
+  if query:match("^%s*$") then return notify("Nothing to run here", vim.log.levels.WARN) end
+  if not dbee_api().core.get_current_connection() then
+    return M.db_choose_connection(function() require("dbee").execute(query) end)
+  end
+  require("dbee").execute(query)
+end
+
+--- ChooseDataSource: pick the active connection from every source.
+function M.db_choose_connection(after)
+  local core = dbee_api().core
+  local items = {}
+  for _, source in ipairs(core.get_sources()) do
+    for _, conn in ipairs(core.source_get_connections(source:name())) do
+      items[#items + 1] = conn
+    end
+  end
+  if #items == 0 then
+    return notify("No connections. Add one in the dbee drawer (<leader>ws) or ~/.local/state/nvim/dbee/persistence.json",
+      vim.log.levels.WARN)
+  end
+  vim.ui.select(items, {
+    prompt = "Data source",
+    format_item = function(c) return string.format("%s  (%s)", c.name, c.type) end,
+  }, function(conn)
+    if not conn then return end
+    core.set_current_connection(conn.id)
+    notify("Data source: " .. conn.name)
+    if type(after) == "function" then after() end
+  end)
+end
+
+--- ChooseSchema: switch database on the current connection.
+function M.db_choose_database()
+  local core = dbee_api().core
+  local conn = core.get_current_connection()
+  if not conn then return M.db_choose_connection(M.db_choose_database) end
+  local ok, current, available = pcall(core.connection_list_databases, conn.id)
+  if not ok or not available or #available == 0 then
+    return notify("This connection can't switch databases", vim.log.levels.WARN)
+  end
+  vim.ui.select(available, { prompt = "Database (current: " .. tostring(current) .. ")" }, function(db)
+    if not db then return end
+    core.connection_select_database(conn.id, db)
+    notify("Database: " .. db)
+  end)
+end
+
+--- DatabaseView.Refresh
+function M.db_refresh()
+  require("dbee").open()
+  dbee_api().ui.drawer_refresh()
+end
+
+--- Console.Execute on <leader>ss: SQL goes to the database, anything else to FSI.
+function M.repl_execute()
+  if vim.bo.filetype == "sql" or vim.bo.filetype == "mysql" or vim.bo.filetype == "plsql" then
+    return M.db_execute()
+  end
+  M.fsi_send()
+end
+
+-------------------------------------------------------------------------------
 -- ReSharper command line tools: the supported way to run Rider's engine
 -- outside a JetBrains IDE. Both load the whole solution (15s+).
 -------------------------------------------------------------------------------

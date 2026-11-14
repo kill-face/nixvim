@@ -6,6 +6,7 @@
     ./dotnet.nix
     ./debug.nix
     ./vcs.nix
+    ./database.nix
     ./keymaps.nix
   ];
 
@@ -73,10 +74,12 @@
   # Lua helpers for keymaps that aren't a single plugin call.
   extraFiles."lua/kf.lua".source = ./lua/kf.lua;
 
-  # easy-dotnet creates its state dir non-recursively; make sure the parent
-  # exists on a fresh account.
+  # Dirs plugins write to without creating them first, which breaks on a fresh
+  # account: easy-dotnet's state dir (non-recursive mkdir) and dbee's log
+  # (~/.cache/nvim/dbee/dbee.log, else a "Press ENTER" prompt on startup).
   extraConfigLuaPre = ''
     vim.fn.mkdir(vim.fn.stdpath('data'), 'p')
+    vim.fn.mkdir(vim.fn.stdpath('cache') .. '/dbee', 'p')
   '';
 
   extraConfigLua = ''
