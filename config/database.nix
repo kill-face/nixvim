@@ -11,9 +11,11 @@
 #      "url": "sqlserver://app:{{ env `DEV_DB_PASS` }}@db.example:1433?database=App" }]
 # `{{ env ... }}` / `{{ exec ... }}` keep secrets out of the file (e.g.
 # {{ exec `cat /run/secrets/dev-db-pass` }} with sops-nix).
-{...}: {
+{pkgs, ...}: {
   plugins.dbee = {
     enable = true;
+    # query history per user instead of a shared /tmp file
+    package = pkgs.callPackage ../packages/nvim-dbee.nix {};
     settings = {
       # upstream's layout swallows :qa (quit twice); see kf.dbee_layout
       window_layout.__raw = "require('kf').dbee_layout()";
