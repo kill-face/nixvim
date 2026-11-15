@@ -188,6 +188,9 @@ in {
     (map "n" "<leader>tu" (kf "reopen_closed") "ReopenClosedTab")
     (map "n" "<C-A-Left>" "<cmd>BufferLineMovePrev<CR>" "Move tab left")
     (map "n" "<C-A-Right>" "<cmd>BufferLineMoveNext<CR>" "Move tab right")
+    # Rider's Alt+Left/Right; zellij keeps Alt+arrows and Alt+[ ] for itself.
+    (map "n" "<A-,>" "<cmd>BufferLineCyclePrev<CR>" "Previous tab")
+    (map "n" "<A-.>" "<cmd>BufferLineCycleNext<CR>" "Next tab")
 
     # ---- Window actions: splits --------------------------------------------
     (map nv "<leader>asv" "<cmd>vsplit<CR>" "SplitVertically")

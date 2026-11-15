@@ -42,6 +42,7 @@ Additions on top of the ideavimrc:
 - **Rider debugger keys:** `F8` over, `F7` into, `S-F8` out, `F9` resume, `C-F8`
   breakpoint, `S-F9` debug, `C-F2` stop, `M-F8` evaluate, `M-F9` run to cursor.
 - **`M-CR`:** Alt+Enter (code actions).
+- **`A-,` / `A-.`:** previous / next tab (Rider's Alt+Left/Right, which zellij takes).
 - **In test files** (buffer-local, from easy-dotnet): `<leader>xt` run test under
   cursor, `<leader>xc` run file, `<leader>dt` debug test, `<leader>xp` peek
   output/stack trace. The same keys work in the test runner window
