@@ -155,6 +155,19 @@ function M.stop()
   pcall(function() require("easy-dotnet").stop() end)
 end
 
+--- Rider's project view key: open the tree, focus it if it's open elsewhere,
+--- close it only when you're already in it.
+function M.explorer()
+  local picker = Snacks.picker.get({ source = "explorer" })[1]
+  if not picker then
+    Snacks.explorer()
+  elseif picker:is_focused() then
+    picker:close()
+  else
+    picker:focus()
+  end
+end
+
 -------------------------------------------------------------------------------
 -- VCS
 -------------------------------------------------------------------------------

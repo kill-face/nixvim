@@ -156,7 +156,7 @@ in {
     # (popup navigation <A-j>/<A-k> in insert mode: editor.nix, blink-cmp)
 
     # ---- Window focus ------------------------------------------------------
-    (map "n" "<leader>wb" (fn "Snacks.explorer()") "NERDTree / project view")
+    (map "n" "<leader>wb" (kf "explorer") "NERDTree / project view")
     (map "n" "<leader>wd" (fn "require('dapui').toggle()") "ActivateDebugToolWindow")
     (map "n" "<leader>wp" "<cmd>Trouble diagnostics toggle<CR>" "ActivateProblemsViewToolWindow")
     (map "n" "<leader>wc" "<cmd>Trouble todo toggle<CR>" "ActivateTODOToolWindow")
