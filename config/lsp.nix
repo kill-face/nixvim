@@ -13,7 +13,15 @@
       jsonls.enable = true;
       lua_ls.enable = true;
       terraformls.enable = true;
-      nixd.enable = true;
+      # nixd asks for its settings on startup and logs an error on every
+      # file when it gets none, so give it some.
+      nixd = {
+        enable = true;
+        config.settings.nixd = {
+          nixpkgs.expr = "import <nixpkgs> { }";
+          formatting.command = ["alejandra"];
+        };
+      };
       yamlls.enable = true;
       pylsp.enable = true;
       ruff.enable = true;
