@@ -16,9 +16,6 @@ in {
   ];
 
   # SharpLsp: Roslyn for C#, FSharp.Compiler.Service for F#, one server.
-  # If a folder holds several .sln files, pick one in sharplsp.toml:
-  #   [csharp]
-  #   solution_path = "src/MyApp.sln"
   lsp.servers.sharplsp = {
     enable = true;
     package = sharplsp;

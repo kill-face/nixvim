@@ -105,9 +105,6 @@ compiled in.
 
 ## .NET notes
 
-- **Choosing a solution.** SharpLsp loads the single `.sln`/`.slnx` it finds. If
-  there are several, it loads none. Pick one in a `sharplsp.toml` next to them:
-  `[csharp]` then `solution_path = "src/MyApp.sln"`.
 - **Debugging.** `<leader>di` debugs the default project (it asks once).
   `<leader>ds` picks a launch profile, `<leader>dan` attaches to a process.
   netcoredbg is weaker than Rider's debugger: no `[DebuggerDisplay]`, no async
