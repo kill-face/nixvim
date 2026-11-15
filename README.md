@@ -56,6 +56,13 @@ Additions on top of the ideavimrc:
   the file / repo. Inside: `<Tab>`/`<S-Tab>` next/previous file, `]c`/`[c`
   next/previous hunk, `g?` all keys. `:DiffviewOpen <commit>^!` shows another
   change (use the commit hash from `jj log`; diffview only knows git).
+- **Conflicts** (jj-diffconflicts): `jj resolve` opens Neovim on each
+  conflicted file with a two-way diff of the sides, and a second tab
+  (`gt`) shows each side against the common base. Edit the left pane into
+  the result, then `:w` and `:qa` to accept, or `:cq` to give up on that file. In a
+  normal session, `<leader>wvm` does the same for the current buffer (no
+  history tab): edit the left pane, `:w`, then `<C-w>o` to close the other one.
+  Usual jj flow: `jj new <conflicted change>`, resolve, `jj squash`.
 - **`<leader>ss`** (Console.Execute) runs the SQL statement in `.sql` buffers
   and sends to F# Interactive elsewhere.
 

@@ -177,6 +177,7 @@ in {
     (map "n" "<leader>wvd" (kf "diffview_toggle") "Show diff of the current change (diffview)")
     (map "n" "<leader>wvh" "<cmd>DiffviewFileHistory %<CR>" "ShowHistory (this file)")
     (map "n" "<leader>wvH" "<cmd>DiffviewFileHistory<CR>" "ShowHistory (repo)")
+    (map "n" "<leader>wvm" "<cmd>JJDiffConflicts<CR>" "Resolve conflicts in this file (jj-diffconflicts)")
 
     # ---- Display options ---------------------------------------------------
     (map nv "<leader>ww" (fn "Snacks.zen()") "ToggleDistractionFreeMode")
