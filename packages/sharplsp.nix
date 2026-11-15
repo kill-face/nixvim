@@ -38,7 +38,13 @@ stdenv.mkDerivation (finalAttrs: {
     # --set-default: a project's devshell (via envrc) can point DOTNET_ROOT at
     # the SDK its global.json pins; otherwise fall back to our .NET 10 SDK,
     # which the sidecars need at minimum.
+    #
+    # TMPDIR: SharpLsp keeps its logs and SDK probe in fixed dirs under the
+    # temp dir (/tmp/sharplsp-logs, /tmp/sharplsp-sdkprobe). Shared /tmp means
+    # the first user to run it owns them and every other user's server fails,
+    # so give each user their own (on disk: survives logout under zellij).
     makeWrapper $out/lib/sharplsp/sharplsp $out/bin/sharplsp \
+      --run 'export TMPDIR="''${XDG_CACHE_HOME:-$HOME/.cache}/sharplsp/tmp"; mkdir -p -m 700 "$TMPDIR"' \
       --set-default DOTNET_ROOT ${dotnet-sdk}/share/dotnet \
       --suffix PATH : ${lib.makeBinPath [dotnet-sdk]}
 
