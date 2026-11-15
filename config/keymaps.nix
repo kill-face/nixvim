@@ -174,6 +174,9 @@ in {
     (map "n" "<leader>wvv" (fn "require('jj.cmd').log()") "ActivateVersionControlToolWindow (jj log)")
     (map "n" "<leader>wvc" (fn "require('jj.cmd').commit()") "ActivateCommitToolWindow (jj commit)")
     (map "n" "<leader>wvp" (fn "require('jj.cmd').open_pr()") "ActivatePullRequestsToolWindow (open PR)")
+    (map "n" "<leader>wvd" (kf "diffview_toggle") "Show diff of the current change (diffview)")
+    (map "n" "<leader>wvh" "<cmd>DiffviewFileHistory %<CR>" "ShowHistory (this file)")
+    (map "n" "<leader>wvH" "<cmd>DiffviewFileHistory<CR>" "ShowHistory (repo)")
 
     # ---- Display options ---------------------------------------------------
     (map nv "<leader>ww" (fn "Snacks.zen()") "ToggleDistractionFreeMode")

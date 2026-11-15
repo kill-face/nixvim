@@ -17,6 +17,7 @@ Neovim set up as a Rider-style .NET IDE, with key bindings that follow
 | Problems / TODO / Find | trouble.nvim |
 | Structure | aerial.nvim |
 | VCS | jj.nvim (log, describe, new, squash, rebase, bookmarks, push), gitsigns |
+| Diff viewer, file history | diffview.nvim, with word-level changes highlighted |
 | Tabs | bufferline (pin, reorder) |
 | easymotion / surround | flash.nvim / nvim-surround |
 
@@ -50,6 +51,11 @@ Additions on top of the ideavimrc:
   InspectCode on the solution (results in the quickfix list).
 - **Markdown preview:** `<leader>mp` toggles; ideavim's `<leader>amvp` /
   `<leader>amve` open / close it.
+- **Diffs** (diffview): `<leader>wvd` opens or closes the diff of the current
+  jj change against its parent, `<leader>wvh` / `<leader>wvH` show the history of
+  the file / repo. Inside: `<Tab>`/`<S-Tab>` next/previous file, `]c`/`[c`
+  next/previous hunk, `g?` all keys. `:DiffviewOpen <commit>^!` shows another
+  change (use the commit hash from `jj log`; diffview only knows git).
 - **`<leader>ss`** (Console.Execute) runs the SQL statement in `.sql` buffers
   and sends to F# Interactive elsewhere.
 

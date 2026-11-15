@@ -156,6 +156,19 @@ function M.stop()
 end
 
 -------------------------------------------------------------------------------
+-- VCS
+-------------------------------------------------------------------------------
+
+--- Open the diff of the working copy (jj's @) against its parent, or close it.
+function M.diffview_toggle()
+  if require("diffview.lib").get_current_view() then
+    vim.cmd("DiffviewClose")
+  else
+    vim.cmd("DiffviewOpen")
+  end
+end
+
+-------------------------------------------------------------------------------
 -- F# Interactive (Rider's Send to F# Interactive)
 -------------------------------------------------------------------------------
 
