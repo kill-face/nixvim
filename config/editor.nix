@@ -9,7 +9,12 @@
     snacks = {
       enable = true;
       settings = {
-        picker.enabled = true;
+        picker = {
+          enabled = true;
+          # `o` opens the file in a buffer (like <CR>) instead of the system
+          # app, which is useless over SSH.
+          sources.explorer.win.list.keys.o = "confirm";
+        };
         explorer.enabled = true;
         terminal.enabled = true;
         zen.enabled = true;
