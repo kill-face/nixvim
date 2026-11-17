@@ -43,6 +43,10 @@ Additions on top of the ideavimrc:
   breakpoint, `S-F9` debug, `C-F2` stop, `M-F8` evaluate, `M-F9` run to cursor.
 - **`M-CR`:** Alt+Enter (code actions).
 - **`A-,` / `A-.`:** previous / next tab (Rider's Alt+Left/Right, which zellij takes).
+- **`S-Esc`:** from any mode, close diffview, popups and all tool windows and go
+  back to the editor. Terminals are hidden, not killed: `<leader>wt` shows the
+  terminal again with its shell still running. (`<leader>q` deletes the buffer,
+  which ends the shell.)
 - **In test files** (buffer-local, from easy-dotnet): `<leader>xt` run test under
   cursor, `<leader>xc` run file, `<leader>dt` debug test, `<leader>xp` peek
   output/stack trace. The same keys work in the test runner window

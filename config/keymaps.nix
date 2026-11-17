@@ -24,6 +24,8 @@ in {
     # ---- nvim basics -------------------------------------------------------
     (map "n" "<Esc>" "<cmd>nohlsearch<CR>" "Clear search highlight")
     (map "t" "<Esc><Esc>" "<C-\\><C-n>" "Exit terminal mode")
+    # Rider's Shift+Esc (hide tool window), but for all of them, from any mode.
+    (map ["n" "i" "x" "t"] "<S-Esc>" (kf "back_to_editor") "Hide all tool windows, back to the editor")
 
     # ---- Vim action modifications ------------------------------------------
     (map "v" "d" ''"_d'' "Delete without yanking") # vnoremap d "_d

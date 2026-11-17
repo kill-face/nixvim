@@ -123,6 +123,43 @@ function M.hide_tool_windows()
   end
 end
 
+local function is_editor(buf)
+  return vim.bo[buf].buftype == "" and vim.bo[buf].buflisted
+end
+
+--- Shift+Esc: leave terminal/insert mode, close diffview, popups and every
+--- tool window, and land in an editor. Terminals are only hidden: their jobs
+--- keep running and `<leader>wt` brings them back.
+function M.back_to_editor()
+  vim.cmd.stopinsert()
+  pcall(function()
+    if require("diffview.lib").get_current_view() then vim.cmd("DiffviewClose") end
+  end)
+  pcall(function() Snacks.notifier.hide() end)
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    if vim.api.nvim_win_get_config(win).relative ~= "" then pcall(vim.api.nvim_win_close, win, false) end
+  end
+  M.hide_tool_windows()
+
+  local current = vim.api.nvim_get_current_win()
+  if is_editor(vim.api.nvim_win_get_buf(current)) then return vim.cmd.nohlsearch() end
+  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+    if is_editor(vim.api.nvim_win_get_buf(win)) then
+      vim.api.nvim_set_current_win(win)
+      return vim.cmd.nohlsearch()
+    end
+  end
+  -- Only a tool window is left: open the most recently used file in a new
+  -- window and close the tool one (snacks won't let its window show a file).
+  local files = vim.tbl_filter(function(b) return is_editor(b.bufnr) end, vim.fn.getbufinfo({ buflisted = 1 }))
+  table.sort(files, function(a, b) return a.lastused > b.lastused end)
+  if files[1] then
+    vim.api.nvim_open_win(files[1].bufnr, true, { split = "above", win = current })
+    pcall(vim.api.nvim_win_close, current, false)
+  end
+  vim.cmd.nohlsearch()
+end
+
 -------------------------------------------------------------------------------
 -- Debugger
 -------------------------------------------------------------------------------
