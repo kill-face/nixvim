@@ -44,8 +44,18 @@
         python = ["isort" "black"];
         rust = ["rustfmt"];
         sh = ["shfmt"];
+        sql = ["sql_formatter"];
         terraform = ["terraform_fmt"];
       };
+      # T-SQL, uppercase keywords, 4-space indent, unless the repo has its own
+      # .sql-formatter.json above the file. (The CLI only looks for one above
+      # Neovim's cwd, and -c skips the lookup, so find it here.)
+      formatters.sql_formatter.prepend_args.__raw = ''
+        function(_, ctx)
+          local repo = vim.fs.find('.sql-formatter.json', { upward = true, path = ctx.dirname })[1]
+          return { '-c', repo or '{"language":"tsql","keywordCase":"upper","tabWidth":4}' }
+        end
+      '';
       formatters.dotnet_format_whitespace = {
         # Roslyn's formatter with the repo's .editorconfig. conform writes the
         # buffer to a temp file next to the original, so .editorconfig applies.

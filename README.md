@@ -9,7 +9,7 @@ Neovim set up as a Rider-style .NET IDE, with key bindings that follow
 | Unit test runner | easy-dotnet.nvim test tree + gutter signs, run/debug from buffer |
 | Debugger | nvim-dap + dap-ui + netcoredbg (via easy-dotnet), inline values |
 | Run configurations, NuGet, solution mgmt, user secrets | easy-dotnet.nvim (`:Dotnet …`) |
-| Reformat Code | `dotnet format whitespace` (.editorconfig), CSharpier if the repo uses it, Fantomas for F# |
+| Reformat Code | `dotnet format whitespace` (.editorconfig), CSharpier if the repo uses it, Fantomas for F#, sql-formatter for SQL (T-SQL by default, or the repo's `.sql-formatter.json`) |
 | Code Cleanup / Inspect Code | JetBrains ReSharper CLI (`jb`) |
 | Database tools (DataGrip) | nvim-dbee: connections drawer, SQL editor, paginated results grid (SQL Server, Postgres, SQLite, …) |
 | Search Everywhere / Go to | snacks.nvim picker |
@@ -68,6 +68,12 @@ Additions on top of the ideavimrc:
   normal session, `<leader>wvm` does the same for the current buffer (no
   history tab): edit the left pane, `:w`, then `<C-w>o` to close the other one.
   Usual jj flow: `jj new <conflicted change>`, resolve, `jj squash`.
+- **Spelling:** on in Markdown, text, git commit and jj description buffers;
+  `<leader>zt` toggles it anywhere (in code only comments and strings are
+  checked). `]s`/`[s` next/previous misspelling, `z=` or `<leader>zs`
+  suggestions, `<leader>za` add the word to your dictionary
+  (`~/.local/share/nvim/spell/en.utf-8.add`), `<leader>zw` mark it wrong,
+  `<leader>zu` undo either. `zg` stays ExpandToLevel4.
 - **`<leader>ss`** (Console.Execute) runs the SQL statement in `.sql` buffers
   and sends to F# Interactive elsewhere.
 

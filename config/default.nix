@@ -45,6 +45,11 @@
     foldlevel = 99;
     foldlevelstart = 99;
     foldcolumn = "1";
+    # Spell checking: off by default, on for prose filetypes (autoCmd below),
+    # <leader>zt toggles it. In code, treesitter limits it to comments and
+    # strings; "camel" checks each part of a camelCase word separately.
+    spelllang = "en";
+    spelloptions = "camel";
   };
 
   # *.fs is ambiguous (Forth / F#) to Vim's detection.
@@ -61,6 +66,8 @@
   };
 
   autoGroups.kf-highlight-yank.clear = true;
+  autoGroups.kf-spell.clear = true;
+  autoGroups.kf-filetype.clear = true;
   autoCmd = [
     {
       # set highlightedyank
@@ -68,6 +75,22 @@
       desc = "Highlight when yanking (copying) text";
       group = "kf-highlight-yank";
       callback.__raw = "function() vim.hl.on_yank() end";
+    }
+    {
+      event = ["FileType"];
+      pattern = ["markdown" "text" "gitcommit" "jjdescription"];
+      desc = "Spell check prose";
+      group = "kf-spell";
+      command = "setlocal spell";
+    }
+    {
+      # Neovim ships no F# ftplugin, so 'commentstring' is empty and gc/gcc
+      # (<leader>c) fail with "Option 'commentstring' is empty".
+      event = ["FileType"];
+      pattern = ["fsharp"];
+      desc = "F# line comments";
+      group = "kf-filetype";
+      callback.__raw = "function() vim.bo.commentstring = '// %s' end";
     }
   ];
 
@@ -80,6 +103,9 @@
   extraConfigLuaPre = ''
     vim.fn.mkdir(vim.fn.stdpath('data'), 'p')
     vim.fn.mkdir(vim.fn.stdpath('cache') .. '/dbee', 'p')
+    -- Words added with <leader>za go here, outside the read-only config.
+    vim.fn.mkdir(vim.fn.stdpath('data') .. '/spell', 'p')
+    vim.opt.spellfile = vim.fn.stdpath('data') .. '/spell/en.utf-8.add'
   '';
 
   extraConfigLua = ''
@@ -123,6 +149,9 @@
 
     # terraform
     terraform
+
+    # sql
+    sql-formatter
 
     # markup
     prettier

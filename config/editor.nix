@@ -96,6 +96,10 @@
             __unkeyed-1 = "<leader>x";
             group = "tests";
           }
+          {
+            __unkeyed-1 = "<leader>z";
+            group = "spelling";
+          }
         ];
       };
     };

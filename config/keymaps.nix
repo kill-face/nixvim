@@ -208,5 +208,15 @@ in {
     # ---- REPL (F# Interactive) ---------------------------------------------
     (map nv "<leader>sr" (kf "fsi_send") "SendToFsi")
     (map nv "<leader>ss" (kf "repl_execute") "Console.Execute (SQL: run statement, F#: send to FSI)")
+
+    # ---- Spelling (not in ideavimrc) ---------------------------------------
+    # ]s / [s jump between misspellings. zg is ExpandToLevel4 above, so adding
+    # a word lives under <leader>z.
+    (map "n" "z=" (picker "spelling") "Spelling suggestions")
+    (map "n" "<leader>zt" "<cmd>setlocal spell!<CR>" "Toggle spell check")
+    (map "n" "<leader>zs" (picker "spelling") "Spelling suggestions")
+    (map "n" "<leader>za" "zg" "Add word to dictionary")
+    (map "n" "<leader>zw" "zw" "Mark word as misspelled")
+    (map "n" "<leader>zu" "zug" "Undo add / mark of word")
   ];
 }
