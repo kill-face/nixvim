@@ -4,7 +4,8 @@
   plugins.lspconfig.enable = true;
 
   lsp = {
-    inlayHints.enable = true;
+    # Off by default (SharpLsp's F# type hints are noisy); <leader>ih toggles.
+    inlayHints.enable = false;
 
     servers = {
       bashls.enable = true;

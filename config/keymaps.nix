@@ -85,6 +85,7 @@ in {
     # ---- Information, Documentation, Usages --------------------------------
     (map "n" "<leader>id" (fn "vim.lsp.buf.hover()") "QuickJavaDoc")
     (map "n" "<leader>ip" (fn "vim.lsp.buf.signature_help()") "ParameterInfo")
+    (map "n" "<leader>ih" (fn "vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())") "Toggle inlay hints (inline types)")
     (map "n" "<leader>ii" (picker "lsp_implementations") "QuickImplementations")
     (map "n" "<leader>ifu" (picker "lsp_references") "FindUsages")
     (map "n" "<leader>isu" (picker "lsp_references") "ShowUsages")
