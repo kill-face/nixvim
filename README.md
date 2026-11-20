@@ -9,7 +9,7 @@ Neovim set up as a Rider-style .NET IDE, with key bindings that follow
 | Unit test runner | easy-dotnet.nvim test tree + gutter signs, run/debug from buffer |
 | Debugger | nvim-dap + dap-ui + netcoredbg (via easy-dotnet), inline values |
 | Run configurations, NuGet, solution mgmt, user secrets | easy-dotnet.nvim (`:Dotnet …`) |
-| Reformat Code | `dotnet format whitespace` (.editorconfig), CSharpier if the repo uses it, Fantomas for F#, sql-formatter for SQL (T-SQL by default, or the repo's `.sql-formatter.json`) |
+| Reformat Code | `dotnet format whitespace` (.editorconfig), CSharpier if the repo uses it, Fantomas for F#, sqp-fmt for SQL where it's installed (reads `sqp-fmt.toml`), else sql-formatter (T-SQL by default, or the repo's `.sql-formatter.json`) |
 | Code Cleanup / Inspect Code | JetBrains ReSharper CLI (`jb`) |
 | Database tools (DataGrip) | nvim-dbee: connections drawer, SQL editor, paginated results grid (SQL Server, Postgres, SQLite, …) |
 | Search Everywhere / Go to | snacks.nvim picker |

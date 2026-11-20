@@ -44,8 +44,17 @@
         python = ["isort" "black"];
         rust = ["rustfmt"];
         sh = ["shfmt"];
-        sql = ["sql_formatter"];
+        # sqp-fmt where it's installed (only changes whitespace and keyword
+        # case; reads sqp-fmt.toml), else sql-formatter.
+        sql.__raw = "{ 'sqp_fmt', 'sql_formatter', stop_after_first = true }";
         terraform = ["terraform_fmt"];
+      };
+      # Not packaged here: on PATH only where it's installed (~/code/personal/sqp-fmt).
+      # --stdin-filepath lets it find the file's sqp-fmt.toml.
+      formatters.sqp_fmt = {
+        command = "sqp-fmt";
+        args = ["--stdin-filepath" "$FILENAME"];
+        stdin = true;
       };
       # T-SQL, uppercase keywords, 4-space indent, unless the repo has its own
       # .sql-formatter.json above the file. (The CLI only looks for one above
