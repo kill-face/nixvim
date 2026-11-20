@@ -1,7 +1,9 @@
 # .NET: SharpLsp (C# + F# language server) and easy-dotnet.nvim (Rider-style
 # test runner, run/debug, NuGet, solution management) on Nix-provided tools.
 {pkgs, ...}: let
-  dotnet-sdk = pkgs.dotnetCorePackages.sdk_10_0;
+  # .NET 11 SDK so restore works for net11.0 projects (newest SDK wins unless a
+  # global.json pins one); .NET 10 stays in for SharpLsp's net10 sidecars.
+  dotnet-sdk = with pkgs.dotnetCorePackages; combinePackages [sdk_11_0 sdk_10_0];
   sharplsp = pkgs.callPackage ../packages/sharplsp.nix {inherit dotnet-sdk;};
   easydotnet = pkgs.callPackage ../packages/easydotnet.nix {};
   resharper-cli = pkgs.callPackage ../packages/resharper-cli.nix {};
