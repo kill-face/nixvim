@@ -97,6 +97,9 @@
   # Lua helpers for keymaps that aren't a single plugin call.
   extraFiles."lua/kf.lua".source = ./lua/kf.lua;
 
+  # F# folds query (nvim-treesitter has none, so .fs buffers had no folds).
+  extraFiles."queries/fsharp/folds.scm".source = ./queries/fsharp/folds.scm;
+
   # Dirs plugins write to without creating them first, which breaks on a fresh
   # account: easy-dotnet's state dir (non-recursive mkdir) and dbee's log
   # (~/.cache/nvim/dbee/dbee.log, else a "Press ENTER" prompt on startup).
