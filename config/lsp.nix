@@ -38,7 +38,9 @@
         "_" = ["trim_whitespace"];
         # CSharpier when the repo uses it, else `dotnet format whitespace`
         cs.__raw = "function(bufnr) return require('kf').csharp_formatters(bufnr) end";
-        fsharp = ["fantomas"];
+        # The injected formatter reads ranges from the current buffer. Run it
+        # before Fantomas can move those ranges.
+        fsharp = ["injected" "fantomas"];
         json = ["jq"];
         lua = ["stylua"];
         nix = ["alejandra"];
@@ -60,12 +62,18 @@
       # T-SQL, uppercase keywords, 4-space indent, unless the repo has its own
       # .sql-formatter.json above the file. (The CLI only looks for one above
       # Neovim's cwd, and -c skips the lookup, so find it here.)
-      formatters.sql_formatter.prepend_args.__raw = ''
-        function(_, ctx)
-          local repo = vim.fs.find('.sql-formatter.json', { upward = true, path = ctx.dirname })[1]
-          return { '-c', repo or '{"language":"tsql","keywordCase":"upper","tabWidth":4}' }
-        end
-      '';
+      formatters.sql_formatter = {
+        # The CLI can return empty output on Conform's stdin pipe. Give it
+        # Conform's temporary file, including when formatting an injection.
+        stdin = false;
+        args = ["--fix" "$FILENAME"];
+        prepend_args.__raw = ''
+          function(_, ctx)
+            local repo = vim.fs.find('.sql-formatter.json', { upward = true, path = ctx.dirname })[1]
+            return { '-c', repo or '{"language":"tsql","keywordCase":"upper","tabWidth":4}' }
+          end
+        '';
+      };
       formatters.dotnet_format_whitespace = {
         # Roslyn's formatter with the repo's .editorconfig. conform writes the
         # buffer to a temp file next to the original, so .editorconfig applies.

@@ -116,6 +116,19 @@ compiled in.
 
 ## .NET notes
 
+- **T-SQL in F# strings.** Mark a plain triple-quoted string with
+  `(*language=sql*)` or `(*language=tsql*)`. For example:
+
+  ```fsharp
+  let findUser = (*language=tsql*) """SELECT Name FROM dbo.Users WHERE Id = @id"""
+  ```
+
+  You can also put `//language=sql` on the line above the `let`, or put
+  the marker immediately before `<|` when passing a literal to a function.
+  Edit the SQL in place. Run `:Inspect` on `SELECT` to see its SQL highlight.
+  In normal mode, `Space f` formats the F# buffer with Fantomas and the
+  marked strings with the configured SQL formatter. Interpolated strings
+  stay under F# highlighting.
 - **Debugging.** `<leader>di` debugs the default project (it asks once).
   `<leader>ds` picks a launch profile, `<leader>dan` attaches to a process.
   netcoredbg is weaker than Rider's debugger: no `[DebuggerDisplay]`, no async
