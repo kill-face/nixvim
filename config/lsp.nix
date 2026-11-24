@@ -39,8 +39,9 @@
         # CSharpier when the repo uses it, else `dotnet format whitespace`
         cs.__raw = "function(bufnr) return require('kf').csharp_formatters(bufnr) end";
         # The injected formatter reads ranges from the current buffer. Run it
-        # before Fantomas can move those ranges.
-        fsharp = ["injected" "fantomas"];
+        # before Fantomas can move those ranges. Conform shares one timeout
+        # across both steps, and a larger F# file can exceed its 1s default.
+        fsharp.__raw = "{ 'injected', 'fantomas', timeout_ms = 5000 }";
         json = ["jq"];
         lua = ["stylua"];
         nix = ["alejandra"];
